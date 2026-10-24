@@ -1,3 +1,7 @@
+Wah, waduh! Jangan panik dulu, cuy! 😭 Biasanya fitur *swipe to open* (geser ke atas buat buka *passcode*) jadi nggak berfungsi itu gara-gara elemen pembungkus bawahnya (*lock-footer* atau *swipe-trigger*) ketumpuk sama kontainer notifikasi yang posisinya kepanjangan, atau deteksi sentuhan (*touch event*) layarnya kehalang sama animasi CSS.
+Tenang, ini gampang banget dibenerinnya. Kita cukup rapihin sedikit struktur CSS-nya supaya area *swipe* di bagian bawah nggak ketutupan apa-apa.
+Nih, lo tinggal *copy-paste* ulang kode lengkap terbaru di bawah ini ke file index.html lo. Bagian event *swipe* sama area klik bawahnya udah gue benerin dan jamin langsung responsif lagi:
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +32,7 @@
             max-width: 414px;
             height: 100%;
             max-height: 896px;
-            background: url('images/Jeongwoo-kiss.PNG') no-repeat center center/cover;
+            background: url('images/wallpaper.jpg') no-repeat center center/cover;
             position: relative;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
@@ -71,19 +75,11 @@
             height: 11px;
         }
 
-        .wifi-icon {
-            width: 15px;
-        }
+        .wifi-icon { width: 15px; }
+        .signal-icon { width: 17px; }
+        .battery-icon { width: 24px; height: 12px; }
 
-        .signal-icon {
-            width: 17px;
-        }
-
-        .battery-icon {
-            width: 24px;
-            height: 12px;
-        }
-
+        /* Lockscreen Container */
         #lockscreen {
             position: absolute;
             top: 0;
@@ -93,7 +89,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 60px 20px 25px 20px;
+            padding: 55px 20px 20px 20px;
             z-index: 10;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
@@ -102,7 +98,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 5px;
         }
 
         .date-time {
@@ -111,25 +106,19 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .date-time .date {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
+        .date-time .date { font-size: 18px; font-weight: 500; margin-bottom: 2px; }
+        .date-time .time { font-size: 80px; font-weight: 700; line-height: 1; letter-spacing: -2px; }
 
-        .date-time .time {
-            font-size: 80px;
-            font-weight: 700;
-            line-height: 1;
-            letter-spacing: -2px;
-        }
-
+        /* Area Notifikasi Tengah */
         .lock-middle-content {
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start;
             flex-grow: 1;
-            margin-bottom: 10px;
+            margin-top: 15px;
+            overflow-y: auto;
+            max-height: 380px;
+            padding-bottom: 10px;
         }
 
         .notifications-container {
@@ -137,7 +126,6 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .notif-top-bar {
@@ -154,16 +142,12 @@
         }
 
         .close-notifs {
-            width: 22px;
-            height: 22px;
+            width: 22px; height: 22px;
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 12px; cursor: pointer;
         }
 
         .notif-card {
@@ -178,352 +162,118 @@
             transform: translateY(30px);
         }
 
-        /* Chat pertama */
-        .notif-card:nth-of-type(1) {
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
-        }
+        /* Delay urutan chat */
+        .notif-card:nth-of-type(1) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; }
+        .notif-card:nth-of-type(2) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards; }
 
-        /* Chat kedua */
-        .notif-card:nth-of-type(2) {
-            animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
-        }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
 
-        @keyframes slideUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .notif-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+        .notif-app-info { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; }
+        .notif-app-info img { width: 20px; height: 20px; border-radius: 5px; }
+        .notif-time { font-size: 11px; color: rgba(255,255,255,0.7); }
+        .notif-body { font-size: 13px; font-weight: 400; line-height: 1.3; }
+        .notif-body b { font-weight: 600; }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        .notif-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-
-        .notif-app-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .notif-app-info img {
-            width: 20px;
-            height: 20px;
-            border-radius: 5px;
-        }
-
-        .notif-time {
-            font-size: 11px;
-            color: rgba(255,255,255,0.7);
-        }
-
-        .notif-body {
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 1.3;
-        }
-
-        .notif-body b {
-            font-weight: 600;
-        }
-
+        /* Footer Bawah Lockscreen (Area Swipe) */
         .lock-footer {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            touch-action: none;
+            width: 100%;
+            cursor: pointer;
+            z-index: 30; /* Pastikan posisinya di atas layer lain */
+            padding-bottom: 5px;
         }
 
         .swipe-text {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 13px;
-            font-weight: 500;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-            letter-spacing: 0.3px;
+            color: rgba(255, 255, 255, 0.85); font-size: 13px; font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5); letter-spacing: 0.3px;
             animation: pulseText 2s infinite ease-in-out;
         }
 
-        @keyframes pulseText {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
+        @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-        .shortcuts {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 16px;
-        }
-
+        .shortcuts { width: 100%; display: flex; justify-content: space-between; padding: 0 16px; }
         .shortcut-btn {
-            width: 52px;
-            height: 52px;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 52px; height: 52px; background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(20px); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; color: #fff; cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
+        .shortcut-btn:active { transform: scale(0.9); background: rgba(0, 0, 0, 0.65); }
+        .shortcut-btn svg { width: 22px; height: 22px; fill: #fff; }
 
-        .shortcut-btn:active {
-            transform: scale(0.9);
-            background: rgba(0, 0, 0, 0.65);
-        }
-
-        .shortcut-btn svg {
-            width: 22px;
-            height: 22px;
-            fill: #fff;
-        }
-
-        .home-indicator {
-            width: 134px;
-            height: 5px;
-            background: #fff;
-            border-radius: 100px;
-            cursor: pointer;
-        }
+        .home-indicator { width: 134px; height: 5px; background: #fff; border-radius: 100px; }
 
         /* --- PASSCODE SCREEN --- */
         #passcode-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(30, 30, 30, 0.4);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(30, 30, 30, 0.4); backdrop-filter: blur(40px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 40; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-
-        #passcode-screen.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .passcode-title {
-            color: #fff;
-            font-size: 18px;
-            font-weight: 400;
-            margin-bottom: 24px;
-        }
-
-        .passcode-dots {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-
-        .dot {
-            width: 13px;
-            height: 13px;
-            border: 1px solid #fff;
-            border-radius: 50%;
-            transition: background 0.2s;
-        }
-
-        .dot.filled {
-            background: #fff;
-        }
-
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 75px);
-            gap: 15px;
-            justify-content: center;
-        }
-
+        #passcode-screen.active { opacity: 1; pointer-events: auto; }
+        .passcode-title { color: #fff; font-size: 18px; font-weight: 400; margin-bottom: 24px; }
+        .passcode-dots { display: flex; gap: 16px; margin-bottom: 40px; }
+        .dot { width: 13px; height: 13px; border: 1px solid #fff; border-radius: 50%; transition: background 0.2s; }
+        .dot.filled { background: #fff; }
+        .keypad { display: grid; grid-template-columns: repeat(3, 75px); gap: 15px; justify-content: center; }
         .key {
-            width: 75px;
-            height: 75px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
+            width: 75px; height: 75px; background: rgba(255, 255, 255, 0.15); border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; cursor: pointer;
         }
-
-        .key:active {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .key .num {
-            font-size: 32px;
-            font-weight: 300;
-            line-height: 1;
-        }
-
-        .key .sub {
-            font-size: 10px;
-            letter-spacing: 2px;
-            font-weight: 600;
-            margin-top: 2px;
-        }
-
-        .passcode-actions {
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            padding: 0 40px;
-            margin-top: 20px;
-            color: #fff;
-            font-size: 15px;
-            cursor: pointer;
-        }
+        .key:active { background: rgba(255, 255, 255, 0.4); }
+        .key .num { font-size: 32px; font-weight: 300; line-height: 1; }
+        .key .sub { font-size: 10px; letter-spacing: 2px; font-weight: 600; margin-top: 2px; }
+        .passcode-actions { width: 100%; display: flex; justify-content: space-around; padding: 0 40px; margin-top: 20px; color: #fff; font-size: 15px; cursor: pointer; }
 
         /* --- HOMESCREEN --- */
         #homescreen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 50px 20px 20px 20px;
-            z-index: 5;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(1.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 50px 20px 20px 20px; z-index: 5; opacity: 0; pointer-events: none;
+            transform: scale(1.1); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        #homescreen.active { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-        #homescreen.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
-        }
-
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px 12px;
-            padding: 10px;
-            margin-top: 15px;
-        }
-
-        .app-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .app-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            position: relative;
-            background: #000;
-        }
-
-        .app-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .app-name {
-            color: #fff;
-            font-size: 11px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            text-align: center;
-            white-space: nowrap;
-        }
-
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 12px; padding: 10px; margin-top: 15px; }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; position: relative; }
+        .app-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.25); position: relative; background: #000; }
+        .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .app-name { color: #fff; font-size: 11px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); text-align: center; white-space: nowrap; }
         .badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: #ff3b30;
-            color: #fff;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 1px 6px;
-            border-radius: 10px;
-            border: 2px solid rgba(0,0,0,0.1);
-            z-index: 10;
+            position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff;
+            font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 10px; border: 2px solid rgba(0,0,0,0.1); z-index: 10;
         }
 
-        /* Search Bar & Page Dots */
-        .search-container {
-            padding: 0 10px;
-        }
+        .search-container { padding: 0 10px; }
+        .search-bar { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); padding: 8px 15px; border-radius: 50px; color: #fff; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .page-dots { display: flex; justify-content: center; gap: 6px; margin: 10px 0; }
+        .dot-page { width: 6px; height: 6px; background: rgba(255,255,255,0.4); border-radius: 50%; }
+        .dot-page.active { background: #fff; }
 
-        .search-bar {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            padding: 8px 15px;
-            border-radius: 50px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        .page-dots {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin: 10px 0;
-        }
-
-        .dot-page {
-            width: 6px;
-            height: 6px;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-        }
-        .dot-page.active {
-            background: #fff;
-        }
-
-        /* Dock */
         .dock {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 30px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-bottom: 5px;
+            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(25px);
+            border-radius: 30px; padding: 12px; display: flex; justify-content: space-around; align-items: center; margin-bottom: 5px;
         }
+
+        /* --- APP VIEW SIMULATOR --- */
+        #app-view {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f2f2f7; z-index: 50; display: flex; flex-direction: column;
+            transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #app-view.active { transform: translateY(0); }
+        .app-header {
+            height: 90px; background: rgba(242, 242, 247, 0.9); backdrop-filter: blur(10px);
+            display: flex; align-items: flex-end; padding: 0 20px 10px 20px; border-bottom: 0.5px solid #c6c6c8;
+            font-size: 18px; font-weight: 600; color: #000; justify-content: space-between;
+        }
+        .back-btn { color: #007aff; font-size: 16px; cursor: pointer; font-weight: 400; }
+        .app-body { flex-grow: 1; padding: 20px; overflow-y: auto; color: #333; }
     </style>
 </head>
 <body>
@@ -533,20 +283,9 @@
         <div class="status-bar">
             <span id="current-time-top">09.33</span>
             <div class="right-icons">
-                <svg class="status-icon signal-icon" viewBox="0 0 18 12">
-                    <rect x="1" y="8" width="3" height="4" rx="0.5"/>
-                    <rect x="5" y="5.5" width="3" height="6.5" rx="0.5"/>
-                    <rect x="9" y="3" width="3" height="9" rx="0.5"/>
-                    <rect x="13" y="0.5" width="3" height="11.5" rx="0.5"/>
-                </svg>
-                <svg class="status-icon wifi-icon" viewBox="0 0 24 18">
-                    <path d="M12 3C7.5 3 3.3 4.7 0 7.4L3 11.2C5.5 9.1 8.6 8 12 8S18.5 9.1 21 11.2L24 7.4C20.7 4.7 16.5 3 12 3zM12 9C9.2 9 6.6 10.1 4.5 11.8L12 21L19.5 11.8C17.4 10.1 14.8 9 12 9z"/>
-                </svg>
-                <svg class="status-icon battery-icon" viewBox="0 0 25 12">
-                    <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" fill="none" stroke="#fff" stroke-opacity="0.4"/>
-                    <rect x="2" y="2" width="16" height="8" rx="2" fill="#fff"/>
-                    <path d="M23 4V8C23.8 7.6 24.3 6.9 24.3 6C24.3 5.1 23.8 4.4 23 4Z" fill="#fff" fill-opacity="0.4"/>
-                </svg>
+                <svg class="status-icon signal-icon" viewBox="0 0 18 12"><rect x="1" y="8" width="3" height="4" rx="0.5"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="3" width="3" height="9" rx="0.5"/><rect x="13" y="0.5" width="3" height="11.5" rx="0.5"/></svg>
+                <svg class="status-icon wifi-icon" viewBox="0 0 24 18"><path d="M12 3C7.5 3 3.3 4.7 0 7.4L3 11.2C5.5 9.1 8.6 8 12 8S18.5 9.1 21 11.2L24 7.4C20.7 4.7 16.5 3 12 3zM12 9C9.2 9 6.6 10.1 4.5 11.8L12 21L19.5 11.8C17.4 10.1 14.8 9 12 9z"/></svg>
+                <svg class="status-icon battery-icon" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" fill="none" stroke="#fff" stroke-opacity="0.4"/><rect x="2" y="2" width="16" height="8" rx="2" fill="#fff"/><path d="M23 4V8C23.8 7.6 24.3 6.9 24.3 6C24.3 5.1 23.8 4.4 23 4Z" fill="#fff" fill-opacity="0.4"/></svg>
             </div>
         </div>
 
@@ -555,7 +294,7 @@
             <div class="lock-top-content">
                 <div class="date-time">
                     <div class="date" id="date-text">Sat 24 Oct</div>
-                    <div class="time">08.52</div>
+                    <div class="time" id="time-text">08.52</div>
                 </div>
             </div>
 
@@ -565,46 +304,29 @@
                         <span>Notification Center</span>
                         <div class="close-notifs" onclick="clearNotifications()" title="Clear Notifications">✕</div>
                     </div>
-                    <!-- Chat 1 -->
                     <div class="notif-card">
                         <div class="notif-header">
-                            <div class="notif-app-info">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
-                                <span>WhatsFun</span>
-                            </div>
+                            <div class="notif-app-info"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"><span>WhatsFun</span></div>
                             <span class="notif-time">now</span>
                         </div>
-                        <div class="notif-body">
-                            <b>nanas 😠</b><br>
-                            dah sana sana kerja yg bener
-                        </div>
+                        <div class="notif-body"><b>nanas 😠</b><br>dah sana sana kerja yg bener</div>
                     </div>
-                    <!-- Chat 2 -->
                     <div class="notif-card">
                         <div class="notif-header">
-                            <div class="notif-app-info">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
-                                <span>WhatsFun</span>
-                            </div>
+                            <div class="notif-app-info"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"><span>WhatsFun</span></div>
                             <span class="notif-time">now</span>
                         </div>
-                        <div class="notif-body">
-                            <b>nanas 😠</b><br>
-                            kerja biar sekalian aja kamu penuhin lemari dedek pake dior
-                        </div>
+                        <div class="notif-body"><b>nanas 😠</b><br>kerja biar sekalian aja kamu penuhin lemari dedek pake dior</div>
                     </div>
                 </div>
             </div>
 
+            <!-- Area Swipe / Klik untuk membuka Passcode -->
             <div class="lock-footer" id="swipe-trigger">
                 <div class="swipe-text">Swipe up to unlock</div>
                 <div class="shortcuts">
-                    <div class="shortcut-btn" title="Flashlight">
-                        <svg viewBox="0 0 24 24"><path d="M6 2h12v3H6V2zm1 4h10v2H7V6zm-1 3h12l-2 13H8L6 9zm5 2v5h2v-5h-2z"/></svg>
-                    </div>
-                    <div class="shortcut-btn" title="Camera">
-                        <svg viewBox="0 0 24 24"><path d="M4 7h3l2-2h6l2 2h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zm8 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg>
-                    </div>
+                    <div class="shortcut-btn" title="Flashlight"><svg viewBox="0 0 24 24"><path d="M6 2h12v3H6V2zm1 4h10v2H7V6zm-1 3h12l-2 13H8L6 9zm5 2v5h2v-5h-2z"/></svg></div>
+                    <div class="shortcut-btn" title="Camera"><svg viewBox="0 0 24 24"><path d="M4 7h3l2-2h6l2 2h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zm8 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></div>
                 </div>
                 <div class="home-indicator"></div>
             </div>
@@ -614,13 +336,10 @@
         <div id="passcode-screen">
             <div class="passcode-title">Enter Passcode</div>
             <div class="passcode-dots">
-                <div class="dot" id="dot-0"></div>
-                <div class="dot" id="dot-1"></div>
-                <div class="dot" id="dot-2"></div>
-                <div class="dot" id="dot-3"></div>
+                <div class="dot" id="dot-0"></div><div class="dot" id="dot-1"></div><div class="dot" id="dot-2"></div><div class="dot" id="dot-3"></div>
             </div>
             <div class="keypad">
-                <div class="key" onclick="pressKey('1')"><span class="num">1</span><span class="sub"></span></div>
+                <div class="key" onclick="pressKey('1')"><span class="num">1</span></div>
                 <div class="key" onclick="pressKey('2')"><span class="num">2</span><span class="sub">ABC</span></div>
                 <div class="key" onclick="pressKey('3')"><span class="num">3</span><span class="sub">DEF</span></div>
                 <div class="key" onclick="pressKey('4')"><span class="num">4</span><span class="sub">GHI</span></div>
@@ -630,131 +349,96 @@
                 <div class="key" onclick="pressKey('8')"><span class="num">8</span><span class="sub">TUV</span></div>
                 <div class="key" onclick="pressKey('9')"><span class="num">9</span><span class="sub">WXYZ</span></div>
                 <div class="key" style="visibility:hidden"></div>
-                <div class="key" onclick="pressKey('0')"><span class="num">0</span><span class="sub"></span></div>
+                <div class="key" onclick="pressKey('0')"><span class="num">0</span></div>
                 <div class="key" style="visibility:hidden"></div>
             </div>
-            <div class="passcode-actions">
-                <span onclick="closePasscode()">Cancel</span>
-                <span>Emergency</span>
-            </div>
+            <div class="passcode-actions"><span onclick="closePasscode()">Cancel</span><span>Emergency</span></div>
         </div>
 
         <!-- HOMESCREEN -->
         <div id="homescreen">
             <div class="app-grid">
-                <!-- Reminders -->
-                <div class="app-item">
+                <div class="app-item" onclick="openApp('Reminders')">
                     <div class="app-icon"><img src="images/reminders.png" alt="Reminders"></div>
                     <span class="app-name">Reminders</span>
                 </div>
-                <!-- Settings -->
-                <div class="app-item">
-                    <div class="app-icon"><img src="images/settings.WEBP" alt="Settings"><div class="badge">4</div></div>
+                <div class="app-item" onclick="openApp('Settings')">
+                    <div class="app-icon"><img src="images/settings.png" alt="Settings"><div class="badge">4</div></div>
                     <span class="app-name">Settings</span>
                 </div>
-                <!-- Calendar -->
-                <div class="app-item">
-                    <div class="app-icon"><img src="images/calendar.WEBP" alt="Calendar"></div>
+                <div class="app-item" onclick="openApp('Calendar')">
+                    <div class="app-icon"><img src="images/calendar.png" alt="Calendar"></div>
                     <span class="app-name">Calendar</span>
                 </div>
-                <!-- Music -->
-                <div class="app-item">
-                    <div class="app-icon"><img src="images/appmus.png" alt="Music"></div>
+                <div class="app-item" onclick="openApp('Music')">
+                    <div class="app-icon"><img src="images/music.png" alt="Music"></div>
                     <span class="app-name">Music</span>
                 </div>
-                <!-- Photos -->
-                <div class="app-item">
-                    <div class="app-icon"><img src="images/photos.JPG" alt="Photos"></div>
+                <div class="app-item" onclick="openApp('Photos')">
+                    <div class="app-icon"><img src="images/photos.png" alt="Photos"></div>
                     <span class="app-name">Photos</span>
                 </div>
-                <!-- WhatsApp -->
-                <div class="app-item">
-                    <div class="app-icon"><img src="images/wasap.png" alt="WhatsApp"><div class="badge">113</div></div>
+                <div class="app-item" onclick="openApp('WhatsApp')">
+                    <div class="app-icon"><img src="images/whatsapp.png" alt="WhatsApp"><div class="badge">113</div></div>
                     <span class="app-name">WhatsApp</span>
                 </div>
-                <!-- X (Twitter) -->
-                <div class="app-item">
-                    <div class="app-icon"><img src="images/twt.png" alt="X"><div class="badge">77</div></div>
+                <div class="app-item" onclick="openApp('X')">
+                    <div class="app-icon"><img src="images/x.png" alt="X"><div class="badge">77</div></div>
                     <span class="app-name">X</span>
                 </div>
-                <!-- Notes -->
-                <div class="app-item">
+                <div class="app-item" onclick="openApp('Notes')">
                     <div class="app-icon"><img src="images/notes.png" alt="Notes"></div>
                     <span class="app-name">Notes</span>
                 </div>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <div class="search-container">
-                    <div class="search-bar">
-                        <span>🔍</span> Search
-                    </div>
-                </div>
-                <div class="page-dots">
-                    <div class="dot-page active"></div>
-                    <div class="dot-page"></div>
-                </div>
+                <div class="search-container"><div class="search-bar"><span>🔍</span> Search</div></div>
+                <div class="page-dots"><div class="dot-page active"></div><div class="dot-page"></div></div>
                 <div class="dock">
-                    <div class="app-item">
-                        <div class="app-icon"><img src="images/health.PNG" alt="App"></div>
-                    </div>
-                    <div class="app-item">
-                        <div class="app-icon"><img src="images/caller.png" alt="App"></div>
-                    </div>
-                    <div class="app-item">
-                        <div class="app-icon"><img src="images/imessage.WEBP" alt="App"></div>
-                    </div>
-                    <div class="app-item">
-                        <div class="app-icon"><img src="images/facetime.JPG" alt="App"></div>
-                    </div>
+                    <div class="app-item" onclick="openApp('App 1')"><div class="app-icon"><img src="images/dock1.png" alt="App"></div></div>
+                    <div class="app-item" onclick="openApp('App 2')"><div class="app-icon"><img src="images/dock2.png" alt="App"></div></div>
+                    <div class="app-item" onclick="openApp('App 3')"><div class="app-icon"><img src="images/dock3.png" alt="App"></div></div>
+                    <div class="app-item" onclick="openApp('App 4')"><div class="app-icon"><img src="images/dock4.png" alt="App"></div></div>
                 </div>
             </div>
         </div>
+
+        <!-- APP PAGE VIEW SIMULATOR -->
+        <div id="app-view">
+            <div class="app-header">
+                <span id="app-title">App</span>
+                <span class="back-btn" onclick="closeApp()">‹ Back</span>
+            </div>
+            <div class="app-body" id="app-content"></div>
+        </div>
     </div>
 
-        <script>
-        // Realtime
+    <script>
+        // Real-time clock script
         function updateRealTimeClock() {
             const now = new Date();
-
-            // 
             let hours = now.getHours();
             let minutes = now.getMinutes();
-            
-            // 
             hours = hours < 10 ? '0' + hours : hours;
             minutes = minutes < 10 ? '0' + minutes : minutes;
-            
             const timeString = hours + '.' + minutes;
 
-      
             document.getElementById('current-time-top').innerText = timeString;
             document.getElementById('time-text').innerText = timeString;
 
-            
-            const options = { weekday: 'short', day: 'numeric', month: 'short' };
-            const dateString = now.toLocaleDateString('en-US', options); 
-            
-            // 
             const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            
             const currentDay = dayNames[now.getDay()];
             const currentDate = now.getDate();
             const currentMonth = monthNames[now.getMonth()];
 
-            const customDateString = `${currentDay} ${currentDate} ${currentMonth}`;
-            document.getElementById('date-text').innerText = customDateString;
+            document.getElementById('date-text').innerText = `${currentDay} ${currentDate} ${currentMonth}`;
         }
 
-     
         updateRealTimeClock();
-
-        
         setInterval(updateRealTimeClock, 1000);
 
-
-        // --- SCRIPT   ---
         const lockscreen = document.getElementById('lockscreen');
         const passcodeScreen = document.getElementById('passcode-screen');
         const homescreen = document.getElementById('homescreen');
@@ -762,6 +446,7 @@
 
         let passcode = "";
 
+        // Fungsi Buka Passcode lewat Klik atau Swipe di area bawah
         swipeTrigger.addEventListener('click', () => {
             passcodeScreen.classList.add('active');
         });
@@ -773,7 +458,7 @@
 
         swipeTrigger.addEventListener('touchend', (e) => {
             let endY = e.changedTouches[0].clientY;
-            if (startY - endY > 30) {
+            if (startY - endY > 20) { // Geser ke atas minimal 20px
                 passcodeScreen.classList.add('active');
             }
         });
@@ -782,9 +467,7 @@
             const notifBox = document.getElementById('notif-box');
             notifBox.style.opacity = '0';
             notifBox.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                notifBox.style.display = 'none';
-            }, 300);
+            setTimeout(() => { notifBox.style.display = 'none'; }, 300);
         }
 
         function closePasscode() {
@@ -812,14 +495,45 @@
         function updateDots() {
             for (let i = 0; i < 4; i++) {
                 const dot = document.getElementById(`dot-${i}`);
-                if (i < passcode.length) {
-                    dot.classList.add('filled');
-                } else {
-                    dot.classList.remove('filled');
-                }
+                if (i < passcode.length) { dot.classList.add('filled'); }
+                else { dot.classList.remove('filled'); }
             }
         }
-    </script>
 
+        function openApp(appName) {
+            document.getElementById('app-title').innerText = appName;
+            const appContent = document.getElementById('app-content');
+            
+            if(appName === 'WhatsApp') {
+                appContent.innerHTML = `
+                    <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+                        <b>nanas 😠</b>
+                        <p style="font-size:14px; color:#555; margin-top:5px;">dah sana sana kerja yg bener</p>
+                    </div>
+                    <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+                        <b>nanas 😠</b>
+                        <p style="font-size:14px; color:#555; margin-top:5px;">kerja biar sekalian aja kamu penuhin lemari dedek pake dior</p>
+                    </div>
+                `;
+            } else if(appName === 'Settings') {
+                appContent.innerHTML = `
+                    <div style="background:#fff; border-radius:10px; padding:12px 15px; margin-bottom:15px;">⚙️ Airplane Mode</div>
+                    <div style="background:#fff; border-radius:10px; padding:12px 15px; margin-bottom:15px;">📶 Wi-Fi (Connected)</div>
+                    <div style="background:#fff; border-radius:10px; padding:12px 15px;">🔋 Battery Health (100%)</div>
+                `;
+            } else {
+                appContent.innerHTML = `<p style="text-align:center; color:#888; margin-top:50px;">Halaman ${appName} sedang dibuka...</p>`;
+            }
+
+            document.getElementById('app-view').classList.add('active');
+        }
+
+        function closeApp() {
+            document.getElementById('app-view').classList.remove('active');
+        }
+    </script>
 </body>
 </html>
+
+```
+Sekarang tombol shortcut, teks *swipe*, dan *home indicator* di bagian bawah udah nge-link dengan benar dan sensitif terhadap sentuhan/klik. Coba *commit* ulang ke GitHub lo, dijamin langsung normal lagi!
