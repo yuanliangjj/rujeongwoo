@@ -23,14 +23,12 @@
             align-items: center;
         }
 
-        /* Container mirip HP */
         .phone-frame {
             width: 100%;
             max-width: 414px;
             height: 100%;
             max-height: 896px;
-            /* Wallpaper dari folder images di GitHub */
-            background: url('images/Jeongwoo-kiss.png') no-repeat center center/cover;
+            background: url('images/Jeongwoo-kiss.PNG') no-repeat center center/cover;
             position: relative;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
@@ -59,15 +57,33 @@
             font-size: 14px;
             font-weight: 600;
             z-index: 100;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
         }
 
-        .status-bar .icons {
+        .status-bar .right-icons {
             display: flex;
+            align-items: center;
             gap: 6px;
-            font-size: 12px;
         }
 
-        /* --- LOCKSCREEN --- */
+        .status-icon {
+            fill: #fff;
+            height: 11px;
+        }
+
+        .wifi-icon {
+            width: 15px;
+        }
+
+        .signal-icon {
+            width: 17px;
+        }
+
+        .battery-icon {
+            width: 24px;
+            height: 12px;
+        }
+
         #lockscreen {
             position: absolute;
             top: 0;
@@ -82,7 +98,6 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
 
-        /* Jam & Tanggal di Atas */
         .lock-top-content {
             display: flex;
             flex-direction: column;
@@ -109,7 +124,6 @@
             letter-spacing: -2px;
         }
 
-        /* Notifikasi di Bawah (Gaya iOS Baru) */
         .lock-middle-content {
             display: flex;
             flex-direction: column;
@@ -123,7 +137,17 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
             transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .notif-top-bar {
@@ -196,33 +220,60 @@
             font-weight: 600;
         }
 
-        /* Bawah Lockscreen (Torch, Camera, Home Indicator) */
         .lock-footer {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            touch-action: none;
+        }
+
+        .swipe-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+            font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+            letter-spacing: 0.3px;
+            animation: pulseText 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
         .shortcuts {
             width: 100%;
             display: flex;
             justify-content: space-between;
-            padding: 0 10px;
+            padding: 0 16px;
         }
 
-        .circle-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+        .shortcut-btn {
+            width: 52px;
+            height: 52px;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
-            font-size: 20px;
             cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .shortcut-btn:active {
+            transform: scale(0.9);
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .shortcut-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #fff;
         }
 
         .home-indicator {
@@ -381,9 +432,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             position: relative;
+            overflow: hidden;
+        }
+
+        .app-icon svg {
+            width: 32px;
+            height: 32px;
         }
 
         .app-name {
@@ -407,22 +463,95 @@
             border: 2px solid rgba(0,0,0,0.1);
         }
 
-        /* Widget Kalender Kustom */
-        .app-icon.calendar {
+        /* Desain Ikon Spesifik iOS */
+        .app-icon.reminders {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 10px;
+            gap: 6px;
+        }
+        .reminders-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+        }
+        .reminders-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .reminders-bar {
+            height: 3px;
+            width: 32px;
+            background: #d1d1d6;
+            border-radius: 2px;
+        }
+
+        .app-icon.settings {
+            background: linear-gradient(135deg, #a1a1a6, #636366);
+        }
+
+        .app-icon.calendar-app {
             background: #fff;
             flex-direction: column;
             color: #333;
         }
-        .calendar .cal-month {
+        .calendar-app .cal-month {
             font-size: 10px;
             color: #ff3b30;
             font-weight: 700;
             text-transform: uppercase;
+            margin-top: 4px;
         }
-        .calendar .cal-day {
-            font-size: 28px;
-            font-weight: 600;
+        .calendar-app .cal-day {
+            font-size: 26px;
+            font-weight: 500;
             line-height: 1;
+            color: #000;
+        }
+
+        .app-icon.music {
+            background: linear-gradient(135deg, #ff2d55, #ff375f);
+        }
+
+        .app-icon.photos {
+            background: #fff;
+        }
+
+        .app-icon.whatsapp {
+            background: linear-gradient(135deg, #34c759, #28a745);
+        }
+
+        .app-icon.x-app {
+            background: #000;
+        }
+
+        .app-icon.notes {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .notes-top {
+            width: 100%;
+            height: 14px;
+            background: #ffcc00;
+        }
+        .notes-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 6px 8px;
+            width: 100%;
+        }
+        .notes-bar {
+            height: 3px;
+            width: 100%;
+            background: #d1d1d6;
+            border-radius: 2px;
         }
 
         /* Search Bar & Page Dots */
@@ -475,19 +604,30 @@
 </head>
 <body>
 
-    <div class="phone-frame">
+    <div class="phone-frame" id="phone-frame">
         <!-- Status Bar -->
         <div class="status-bar">
-            <span id="current-time-top">10:42</span>
-            <div class="icons">
-                <span>📶</span>
-                <span>🔋</span>
+            <span id="current-time-top">09.33</span>
+            <div class="right-icons">
+                <svg class="status-icon signal-icon" viewBox="0 0 18 12">
+                    <rect x="1" y="8" width="3" height="4" rx="0.5"/>
+                    <rect x="5" y="5.5" width="3" height="6.5" rx="0.5"/>
+                    <rect x="9" y="3" width="3" height="9" rx="0.5"/>
+                    <rect x="13" y="0.5" width="3" height="11.5" rx="0.5"/>
+                </svg>
+                <svg class="status-icon wifi-icon" viewBox="0 0 24 18">
+                    <path d="M12 3C7.5 3 3.3 4.7 0 7.4L3 11.2C5.5 9.1 8.6 8 12 8S18.5 9.1 21 11.2L24 7.4C20.7 4.7 16.5 3 12 3zM12 9C9.2 9 6.6 10.1 4.5 11.8L12 21L19.5 11.8C17.4 10.1 14.8 9 12 9z"/>
+                </svg>
+                <svg class="status-icon battery-icon" viewBox="0 0 25 12">
+                    <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" fill="none" stroke="#fff" stroke-opacity="0.4"/>
+                    <rect x="2" y="2" width="16" height="8" rx="2" fill="#fff"/>
+                    <path d="M23 4V8C23.8 7.6 24.3 6.9 24.3 6C24.3 5.1 23.8 4.4 23 4Z" fill="#fff" fill-opacity="0.4"/>
+                </svg>
             </div>
         </div>
 
         <!-- LOCKSCREEN -->
         <div id="lockscreen">
-            <!-- Bagian Atas: Jam dan Tanggal -->
             <div class="lock-top-content">
                 <div class="date-time">
                     <div class="date" id="date-text">Sat 24 Oct</div>
@@ -495,7 +635,6 @@
                 </div>
             </div>
 
-            <!-- Bagian Tengah/Bawah: Notifikasi ala iOS -->
             <div class="lock-middle-content">
                 <div class="notifications-container" id="notif-box">
                     <div class="notif-top-bar">
@@ -531,13 +670,17 @@
                 </div>
             </div>
 
-            <!-- Bagian Bawah: Shortcut & Home Indicator -->
-            <div class="lock-footer">
+            <div class="lock-footer" id="swipe-trigger">
+                <div class="swipe-text">Swipe up to unlock</div>
                 <div class="shortcuts">
-                    <div class="circle-btn">🔦</div>
-                    <div class="circle-btn">📷</div>
+                    <div class="shortcut-btn" title="Flashlight">
+                        <svg viewBox="0 0 24 24"><path d="M6 2h12v3H6V2zm1 4h10v2H7V6zm-1 3h12l-2 13H8L6 9zm5 2v5h2v-5h-2z"/></svg>
+                    </div>
+                    <div class="shortcut-btn" title="Camera">
+                        <svg viewBox="0 0 24 24"><path d="M4 7h3l2-2h6l2 2h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zm8 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg>
+                    </div>
                 </div>
-                <div class="home-indicator" id="swipe-trigger" title="Swipe Up to Open"></div>
+                <div class="home-indicator"></div>
             </div>
         </div>
 
@@ -573,39 +716,76 @@
         <!-- HOMESCREEN -->
         <div id="homescreen">
             <div class="app-grid">
+                <!-- Reminders -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #f5f5f7, #e2e2e5);">📋</div>
+                    <div class="app-icon reminders">
+                        <div class="reminders-line"><div class="reminders-dot" style="background:#ff9500;"></div><div class="reminders-bar"></div></div>
+                        <div class="reminders-line"><div class="reminders-dot" style="background:#007aff;"></div><div class="reminders-bar"></div></div>
+                        <div class="reminders-line"><div class="reminders-dot" style="background:#34c759;"></div><div class="reminders-bar"></div></div>
+                    </div>
                     <span class="app-name">Reminders</span>
                 </div>
+                <!-- Settings -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #98989d, #636366);">⚙️<div class="badge">4</div></div>
+                    <div class="app-icon settings">
+                        <svg viewBox="0 0 24 24" fill="#fff"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                        <div class="badge">4</div>
+                    </div>
                     <span class="app-name">Settings</span>
                 </div>
+                <!-- Calendar -->
                 <div class="app-item">
-                    <div class="app-icon calendar">
+                    <div class="app-icon calendar-app">
                         <span class="cal-month">Sat</span>
                         <span class="cal-day">24</span>
                     </div>
                     <span class="app-name">Calendar</span>
                 </div>
+                <!-- Music -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #ff2d55, #ff375f);">🎵</div>
+                    <div class="app-icon music">
+                        <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                    </div>
                     <span class="app-name">Music</span>
                 </div>
+                <!-- Photos -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #ffcc00, #ff9500);">🌸</div>
+                    <div class="app-icon photos">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M12 12c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4z"/>
+                            <path fill="#EA4335" d="M12 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                            <path fill="#FBBC05" d="M12 12c0 2.21-1.79 4-4 4s-4-1.79-4-4 1.79-4 4-4 4 1.79 4 4z"/>
+                            <path fill="#34A853" d="M12 12c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4z"/>
+                        </svg>
+                    </div>
                     <span class="app-name">Photos</span>
                 </div>
+                <!-- WhatsApp -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #34c759, #30b0c7);">💬<div class="badge">113</div></div>
+                    <div class="app-icon whatsapp">
+                        <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.15-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.84 9.84 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m9.013-19.025c-2.316-2.317-5.399-3.592-8.673-3.592-6.753 0-12.249 5.496-12.252 12.251 0 2.158.563 4.264 1.636 6.115l-1.74 6.347 6.494-1.706c1.782.972 3.804 1.484 5.852 1.485h.005c6.751 0 12.248-5.496 12.25-12.253.001-3.274-1.275-6.357-3.592-8.673z"/></svg>
+                        <div class="badge">113</div>
+                    </div>
                     <span class="app-name">WhatsApp</span>
                 </div>
+                <!-- X (Twitter) -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #1c1c1e, #000);">𝕏<div class="badge">77</div></div>
+                    <div class="app-icon x-app">
+                        <svg viewBox="0 0 24 24" fill="#fff" style="width: 24px; height: 24px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        <div class="badge">77</div>
+                    </div>
                     <span class="app-name">X</span>
                 </div>
+                <!-- Notes -->
                 <div class="app-item">
-                    <div class="app-icon" style="background: linear-gradient(135deg, #ffcc00, #ff9500);">📝</div>
+                    <div class="app-icon notes">
+                        <div class="notes-top"></div>
+                        <div class="notes-lines">
+                            <div class="notes-bar" style="width: 80%;"></div>
+                            <div class="notes-bar" style="width: 60%;"></div>
+                            <div class="notes-bar" style="width: 90%;"></div>
+                        </div>
+                    </div>
                     <span class="app-name">Notes</span>
                 </div>
             </div>
@@ -622,16 +802,24 @@
                 </div>
                 <div class="dock">
                     <div class="app-item">
-                        <div class="app-icon" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">📑</div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">
+                            <svg viewBox="0 0 24 24" fill="#fff"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+                        </div>
                     </div>
                     <div class="app-item">
-                        <div class="app-icon" style="background: linear-gradient(135deg, #34c759, #28a745);">📞</div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #34c759, #28a745);">
+                            <svg viewBox="0 0 24 24" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                        </div>
                     </div>
                     <div class="app-item">
-                        <div class="app-icon" style="background: linear-gradient(135deg, #007aff, #0056b3);">🧭</div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #007aff, #0056b3);">
+                            <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </div>
                     </div>
                     <div class="app-item">
-                        <div class="app-icon" style="background: linear-gradient(135deg, #af52de, #89288f);">🐼</div>
+                        <div class="app-icon" style="background: linear-gradient(135deg, #af52de, #89288f);">
+                            <span style="font-size: 26px;">🐼</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -646,12 +834,22 @@
 
         let passcode = "";
 
-        // Fungsi klik Home Indicator untuk buka Passcode
         swipeTrigger.addEventListener('click', () => {
             passcodeScreen.classList.add('active');
         });
 
-        // Fungsi tombol silang (✕) untuk menghilangkan notifikasi di bawah
+        let startY = 0;
+        swipeTrigger.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        });
+
+        swipeTrigger.addEventListener('touchend', (e) => {
+            let endY = e.changedTouches[0].clientY;
+            if (startY - endY > 30) {
+                passcodeScreen.classList.add('active');
+            }
+        });
+
         function clearNotifications() {
             const notifBox = document.getElementById('notif-box');
             notifBox.style.opacity = '0';
