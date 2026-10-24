@@ -29,7 +29,8 @@
             max-width: 414px;
             height: 100%;
             max-height: 896px;
-            background: url('images/Jeongwoo-kiss.PNG') no-repeat center center/cover;
+            /* Wallpaper dari folder images di GitHub */
+            background: url('images/Jeongwoo-kiss.png') no-repeat center center/cover;
             position: relative;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
@@ -76,16 +77,17 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 60px 20px 30px 20px;
+            padding: 60px 20px 25px 20px;
             z-index: 10;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
 
-        .lock-content {
+        /* Jam & Tanggal di Atas */
+        .lock-top-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .date-time {
@@ -107,23 +109,55 @@
             letter-spacing: -2px;
         }
 
-        /* Notifikasi ala WhatsFun */
-        .notifications {
-            width: 100%;
-            margin-top: 25px;
+        /* Notifikasi di Bawah (Gaya iOS Baru) */
+        .lock-middle-content {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-bottom: 10px;
+        }
+
+        .notifications-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .notif-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0 4px 4px 4px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .close-notifs {
+            width: 22px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .notif-card {
             background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-radius: 20px;
             padding: 12px 16px;
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
         .notif-header {
@@ -167,7 +201,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .shortcuts {
@@ -444,7 +478,7 @@
     <div class="phone-frame">
         <!-- Status Bar -->
         <div class="status-bar">
-            <span id="current-time-top">08:52</span>
+            <span id="current-time-top">10:42</span>
             <div class="icons">
                 <span>📶</span>
                 <span>🔋</span>
@@ -453,13 +487,21 @@
 
         <!-- LOCKSCREEN -->
         <div id="lockscreen">
-            <div class="lock-content">
+            <!-- Bagian Atas: Jam dan Tanggal -->
+            <div class="lock-top-content">
                 <div class="date-time">
                     <div class="date" id="date-text">Sat 24 Oct</div>
                     <div class="time">08.52</div>
                 </div>
+            </div>
 
-                <div class="notifications">
+            <!-- Bagian Tengah/Bawah: Notifikasi ala iOS -->
+            <div class="lock-middle-content">
+                <div class="notifications-container" id="notif-box">
+                    <div class="notif-top-bar">
+                        <span>Notification Center</span>
+                        <div class="close-notifs" onclick="clearNotifications()" title="Clear Notifications">✕</div>
+                    </div>
                     <div class="notif-card">
                         <div class="notif-header">
                             <div class="notif-app-info">
@@ -489,6 +531,7 @@
                 </div>
             </div>
 
+            <!-- Bagian Bawah: Shortcut & Home Indicator -->
             <div class="lock-footer">
                 <div class="shortcuts">
                     <div class="circle-btn">🔦</div>
@@ -602,12 +645,21 @@
         const swipeTrigger = document.getElementById('swipe-trigger');
 
         let passcode = "";
-        const correctPasscode = "1234"; // Password bebas, default 1234
 
-        // Klik garis home indicator di lockscreen -> buka Passcode Screen
+        // Fungsi klik Home Indicator untuk buka Passcode
         swipeTrigger.addEventListener('click', () => {
             passcodeScreen.classList.add('active');
         });
+
+        // Fungsi tombol silang (✕) untuk menghilangkan notifikasi di bawah
+        function clearNotifications() {
+            const notifBox = document.getElementById('notif-box');
+            notifBox.style.opacity = '0';
+            notifBox.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                notifBox.style.display = 'none';
+            }, 300);
+        }
 
         function closePasscode() {
             passcodeScreen.classList.remove('active');
@@ -622,7 +674,6 @@
 
                 if (passcode.length === 4) {
                     setTimeout(() => {
-                        // Langsung masuk ke homescreen (bisa diatur validasi kalau mau strict)
                         passcodeScreen.classList.remove('active');
                         lockscreen.style.transform = 'translateY(-100%)';
                         lockscreen.style.opacity = '0';
