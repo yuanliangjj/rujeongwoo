@@ -75,7 +75,7 @@
         .signal-icon { width: 17px; }
         .battery-icon { width: 24px; height: 12px; }
 
-        /* Lockscreen Container */
+        /* LOCKSCREEN CONTAINER */
         #lockscreen {
             position: absolute;
             top: 0;
@@ -83,8 +83,7 @@
             width: 100%;
             height: 100%;
             display: grid;
-            grid-template-rows: auto lfr
-auto;
+            grid-template-rows: auto 1fr auto;
             padding: 55px 20px 25px 20px;
             z-index: 10;
             box-sizing: border-box;
@@ -107,7 +106,7 @@ auto;
         .date-time .date { font-size: 18px; font-weight: 500; margin-bottom: 2px; }
         .date-time .time { font-size: 80px; font-weight: 700; line-height: 1; letter-spacing: -2px; }
 
-        /* Area Notifikasi Tengah */
+        /* Notifikasi di Bawah Lockscreen */
         .lock-middle-content {
             grid-row: 3;
             display: flex;
@@ -115,7 +114,7 @@ auto;
             justify-content: flex-end;
             width: 100%;
             margin-bottom: 12px;
-            max-height: 320px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
@@ -160,7 +159,6 @@ auto;
             transform: translateY(30px);
         }
 
-        /* Delay urutan chat */
         .notif-card:nth-of-type(1) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; }
         .notif-card:nth-of-type(2) { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards; }
 
@@ -174,7 +172,6 @@ auto;
         .notif-body { font-size: 13px; font-weight: 400; line-height: 1.3; }
         .notif-body b { font-weight: 600; }
 
-        /* Footer Bawah Lockscreen (Area Swipe) */
         .lock-footer {
             grid-row: 3;
             display: flex;
@@ -183,7 +180,7 @@ auto;
             gap: 12px;
             width: 100%;
             cursor: pointer;
-            z-index: 30; 
+            z-index: 30;
         }
 
         .swipe-text {
@@ -230,120 +227,33 @@ auto;
 
         /* --- HOMESCREEN --- */
         #homescreen {
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            padding: 55px 20px 20px 20px; 
-            z-index: 5; 
-            opacity: 0; 
-            pointer-events: none;
-            transform: scale(1.1); 
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 55px 20px 20px 20px; z-index: 5; opacity: 0; pointer-events: none;
+            transform: scale(1.1); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-sizing: border-box;
         }
-        
-        #homescreen.active { 
-            opacity: 1; 
-            pointer-events: auto; 
-            transform: scale(1); 
-        }
+        #homescreen.active { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-        .app-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); gap: 20px 12px; 
-            padding: 10px; 
-            margin-top: 15px; 
-        }
-        .app-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 5px; 
-            cursor: pointer; 
-            position: relative; 
-        }
-        .app-icon { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 14px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25); 
-            position: relative; 
-            background: #000; 
-        }
-        .app-icon img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-        .app-name { 
-            color: #fff; 
-            font-size: 11px; 
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8); 
-            text-align: center; 
-            white-space: nowrap; 
-        }
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 12px; padding: 10px; margin-top: 15px; }
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; position: relative; }
+        .app-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.25); position: relative; background: #000; }
+        .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .app-name { color: #fff; font-size: 11px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); text-align: center; white-space: nowrap; }
         .badge {
-            position: absolute; 
-            top: -4px; 
-            right: -4px; 
-            background: #ff3b30; 
-            color: #fff;
-            font-size: 11px; 
-            font-weight: 600; 
-            padding: 1px 6px; 
-            border-radius: 10px; 
-            border: 2px solid rgba(0,0,0,0.1); 
-            z-index: 10;
+            position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff;
+            font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 10px; border: 2px solid rgba(0,0,0,0.1); z-index: 10;
         }
 
-        .search-container { 
-            padding: 0 10px; 
-        }
-        
-        .search-bar { 
-            background: rgba(255, 255, 255, 0.25); 
-            backdrop-filter: blur(10px); 
-            padding: 8px 15px; 
-            border-radius: 50px; 
-            color: #fff; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            font-size: 14px; 
-        }
-        
-        .page-dots { 
-            display: flex; 
-            justify-content: center; 
-            gap: 6px; 
-            margin: 10px 0; 
-        }
-        
-        .dot-page { 
-            width: 6px; 
-            height: 6px; 
-            background: rgba(255,255,255,0.4); border-radius: 50%; 
-        }
-        
-        .dot-page.active { 
-            background: #fff; 
-        }
+        .search-container { padding: 0 10px; }
+        .search-bar { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); padding: 8px 15px; border-radius: 50px; color: #fff; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .page-dots { display: flex; justify-content: center; gap: 6px; margin: 10px 0; }
+        .dot-page { width: 6px; height: 6px; background: rgba(255,255,255,0.4); border-radius: 50%; }
+        .dot-page.active { background: #fff; }
 
         .dock {
-            background: rgba(255, 255, 255, 0.25); 
-            backdrop-filter: blur(25px);
-            border-radius: 30px; 
-            padding: 12px; 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            margin-bottom: 5px;
+            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(25px);
+            border-radius: 30px; padding: 12px; display: flex; justify-content: space-around; align-items: center; margin-bottom: 5px;
         }
 
         /* --- APP VIEW SIMULATOR --- */
@@ -396,10 +306,17 @@ auto;
                             <span class="notif-time">now</span>
                         </div>
                         <div class="notif-body"><b>nanas 😠</b><br>dah sana sana kerja yg bener</div>
+                    </div>
+                    <div class="notif-card">
+                        <div class="notif-header">
+                            <div class="notif-app-info"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA"><span>WhatsFun</span></div>
+                            <span class="notif-time">now</span>
+                        </div>
+                        <div class="notif-body"><b>nanas 😠</b><br>kerja biar sekalian aja kamu penuhin lemari dedek pake dior</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Area Swipe / Klik untuk membuka Passcode -->
             <div class="lock-footer" id="swipe-trigger">
                 <div class="swipe-text">Swipe up to unlock</div>
                 <div class="shortcuts">
@@ -493,7 +410,6 @@ auto;
     </div>
 
     <script>
-        // Real-time clock script
         function updateRealTimeClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -524,7 +440,6 @@ auto;
 
         let passcode = "";
 
-        // Fungsi Buka Passcode lewat Klik atau Swipe di area bawah
         swipeTrigger.addEventListener('click', () => {
             passcodeScreen.classList.add('active');
         });
@@ -536,7 +451,7 @@ auto;
 
         swipeTrigger.addEventListener('touchend', (e) => {
             let endY = e.changedTouches[0].clientY;
-            if (startY - endY > 20) { // Geser ke atas minimal 20px
+            if (startY - endY > 20) {
                 passcodeScreen.classList.add('active');
             }
         });
