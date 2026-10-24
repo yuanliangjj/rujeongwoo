@@ -247,14 +247,54 @@
         
         #homescreen.active { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 12px; padding: 10px; margin-top: 15px; }
-        .app-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; position: relative; }
-        .app-icon { width: 60px; height: 60px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.25); position: relative; background: #000; }
-        .app-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .app-name { color: #fff; font-size: 11px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); text-align: center; white-space: nowrap; }
+        .app-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px 12px; 
+            padding: 10px; 
+            margin-top: 15px;
+        }
+        .app-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 5px; 
+            cursor: pointer; 
+            position: relative;
+        }
+        .app-icon { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 14px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25); 
+            position: relative; 
+            background: #000;
+        }
+        .app-icon img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+        }
+        .app-name { 
+            color: #fff; 
+            font-size: 11px; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8); 
+            text-align: center; 
+            white-space: nowrap;
+        }
         .badge {
-            position: absolute; top: -4px; right: -4px; background: #ff3b30; color: #fff;
-            font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 10px; border: 2px solid rgba(0,0,0,0.1); z-index: 10;
+            position: absolute;
+            top: -4px; 
+            right: -4px; 
+            background: #ff3b30; 
+            color: #fff;
+            font-size: 11px; 
+            font-weight: 600; 
+            padding: 1px 6px; 
+            border-radius: 10px; 
+            border: 2px solid rgba(0,0,0,0.1); 
+            z-index: 10;
         }
 
         .search-container { padding: 0 10px; }
