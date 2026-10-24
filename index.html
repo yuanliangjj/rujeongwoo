@@ -531,7 +531,7 @@
     <div class="phone-frame" id="phone-frame">
         <!-- Status Bar -->
         <div class="status-bar">
-            <span id="current-time-top"></span>
+            <span id="current-time-top">09.33</span>
             <div class="right-icons">
                 <svg class="status-icon signal-icon" viewBox="0 0 18 12">
                     <rect x="1" y="8" width="3" height="4" rx="0.5"/>
@@ -554,8 +554,8 @@
         <div id="lockscreen">
             <div class="lock-top-content">
                 <div class="date-time">
-                    <div class="date" id="date-text"></div>
-                    <div class="time"></div>
+                    <div class="date" id="date-text">Sat 24 Oct</div>
+                    <div class="time">08.52</div>
                 </div>
             </div>
 
@@ -712,7 +712,49 @@
         </div>
     </div>
 
-    <script>
+        <script>
+        // Realtime
+        function updateRealTimeClock() {
+            const now = new Date();
+
+            // 
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            
+            // 
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            const timeString = hours + '.' + minutes;
+
+      
+            document.getElementById('current-time-top').innerText = timeString;
+            document.getElementById('time-text').innerText = timeString;
+
+            
+            const options = { weekday: 'short', day: 'numeric', month: 'short' };
+            const dateString = now.toLocaleDateString('en-US', options); 
+            
+            // 
+            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            
+            const currentDay = dayNames[now.getDay()];
+            const currentDate = now.getDate();
+            const currentMonth = monthNames[now.getMonth()];
+
+            const customDateString = `${currentDay} ${currentDate} ${currentMonth}`;
+            document.getElementById('date-text').innerText = customDateString;
+        }
+
+     
+        updateRealTimeClock();
+
+        
+        setInterval(updateRealTimeClock, 1000);
+
+
+        // --- SCRIPT   ---
         const lockscreen = document.getElementById('lockscreen');
         const passcodeScreen = document.getElementById('passcode-screen');
         const homescreen = document.getElementById('homescreen');
@@ -778,5 +820,6 @@
             }
         }
     </script>
+
 </body>
 </html>
