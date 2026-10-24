@@ -574,14 +574,13 @@
             document.getElementById('app-view').classList.remove('active');
         }
 
-        // TAMPILAN Chat
                 function openChatRoom(name, imgUrl) {
             const appContent = document.getElementById('app-content');
             
-            // PERBAIKAN 1: Tambahkan tombol back di header chat agar bisa kembali ke daftar kontak
+            // PERBAIKAN HEADER: Tombol back ditaruh paling depan agar bisa diklik balik ke list chat
             document.getElementById('app-title').innerHTML = `
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span onclick="openApp('WhatsApp')" style="color: #007aff; font-size: 16px; cursor: pointer; font-weight: 400; margin-right: 4px;">‹ Back</span>
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                    <span onclick="openApp('WhatsApp')" style="color: #007aff; font-size: 16px; cursor: pointer; font-weight: 400; margin-right: 2px; z-index: 20;">‹ Back</span>
                     <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: #ccc; flex-shrink: 0;">
                         <img src="${imgUrl}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg'">
                     </div>
@@ -592,12 +591,12 @@
                 </div>
             `;
             
-            // PERBAIKAN 2 & 3: Tambah input bar bawah ala iMessage/WhatsApp (sesuai gambar) & atur padding supaya bubble chat tidak mepet ke bawah
+            // PERBAIKAN BODY: Menggunakan flex column space-between agar bar bawah menempel pas di dasar layar
             appContent.innerHTML = `
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/basketball.jpg') no-repeat center center/cover; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/basketball.jpg') no-repeat center center/cover; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; padding: 0;">
                     
-                    <!-- Area Daftar Bubble Chat -->
-                    <div style="padding: 15px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex-grow: 1;">
+                    <!-- Area Bubble Chat -->
+                    <div style="padding: 15px 15px 10px 15px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex-grow: 1; margin-top: 10px;">
                         <div style="background: #ffffff; padding: 10px 14px; border-radius: 12px; font-size: 14px; align-self: flex-start; max-width: 80%; color: #000; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
                             Kata gue mah lu beliin aja bunga buat nanas
                             <div style="font-size: 10px; color: #8e8e93; text-align: right; margin-top: 2px;">03.46</div>
@@ -615,32 +614,28 @@
 
                         <div style="background: #dcf8c6; padding: 10px 14px; border-radius: 12px; font-size: 14px; align-self: flex-end; max-width: 80%; color: #000; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
                             Klasik gasih sa?
-                            <span style="font-size: 10px; color: #555; margin-left: 6px;">03.46 ✓✓</span>
+                            <span style="font-size: 10px; color: #555; margin-left: 6px;">03.46 </span>
                         </div>
                     </div>
 
-                    <!-- Bar Input Chat di Bawah (Sesuai Gambar Referensi ke-4) -->
-                    <div style="background: #f6f6f6; padding: 10px 15px 25px 15px; display: flex; align-items: center; gap: 12px; border-top: 0.5px solid #d1d1d6;">
-                        <!-- Tombol Plus (+) -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <!-- Input Bar Bawah (Menempel pas di dasar layar) -->
+                    <div style="background: rgba(246, 246, 246, 0.95); backdrop-filter: blur(10px); padding: 10px 15px 20px 15px; display: flex; align-items: center; gap: 12px; border-top: 0.5px solid #d1d1d6; width: 100%; box-sizing: border-box;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.2" stroke-linecap="round" style="flex-shrink: 0;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         
-                        <!-- Kolom Ketik Pesan + Ikon Stiker/Kertas -->
-                        <div style="flex-grow: 1; background: #fff; border: 0.5px solid #c7c7cc; border-radius: 20px; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <span style="color: #8e8e93; font-size: 14px;"></span>
-                            <!-- Ikon Stiker Kecil di dalam kolom -->
+                        <div style="flex-grow: 1; background: #fff; border: 0.5px solid #c7c7cc; border-radius: 20px; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; height: 36px;">
+                            <span></span>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
                         </div>
 
-                        <!-- Ikon Kamera -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="1.8" style="flex-shrink: 0;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
 
-                        <!-- Ikon Mic Audio -->
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="1.8"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="1.8" style="flex-shrink: 0;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
                     </div>
 
                 </div>
             `;
         }
+
 
 
     </script>
