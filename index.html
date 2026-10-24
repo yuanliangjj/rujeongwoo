@@ -1,7 +1,4 @@
-Wah, waduh! Jangan panik dulu, cuy! 😭 Biasanya fitur *swipe to open* (geser ke atas buat buka *passcode*) jadi nggak berfungsi itu gara-gara elemen pembungkus bawahnya (*lock-footer* atau *swipe-trigger*) ketumpuk sama kontainer notifikasi yang posisinya kepanjangan, atau deteksi sentuhan (*touch event*) layarnya kehalang sama animasi CSS.
-Tenang, ini gampang banget dibenerinnya. Kita cukup rapihin sedikit struktur CSS-nya supaya area *swipe* di bagian bawah nggak ketutupan apa-apa.
-Nih, lo tinggal *copy-paste* ulang kode lengkap terbaru di bawah ini ke file index.html lo. Bagian event *swipe* sama area klik bawahnya udah gue benerin dan jamin langsung responsif lagi:
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -534,6 +531,3 @@ Nih, lo tinggal *copy-paste* ulang kode lengkap terbaru di bawah ini ke file ind
     </script>
 </body>
 </html>
-
-```
-Sekarang tombol shortcut, teks *swipe*, dan *home indicator* di bagian bawah udah nge-link dengan benar dan sensitif terhadap sentuhan/klik. Coba *commit* ulang ke GitHub lo, dijamin langsung normal lagi!
