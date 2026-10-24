@@ -529,30 +529,74 @@
             }
         }
 
-        function openApp(appName) {
+                function openApp(appName) {
             document.getElementById('app-title').innerText = appName;
             const appContent = document.getElementById('app-content');
             
+            // UI
             if(appName === 'WhatsApp') {
                 appContent.innerHTML = `
-                    <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
-                        <b>nanas 😠</b>
-                        <p style="font-size:14px; color:#555; margin-top:5px;">dah sana sana kerja yg bener</p>
-                    </div>
-                    <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
-                        <b>nanas 😠</b>
-                        <p style="font-size:14px; color:#555; margin-top:5px;">kerja biar sekalian aja kamu penuhin lemari dedek pake dior</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="font-size: 22px; font-weight: 700; margin-bottom: 5px; color: #000;">Chats</div>
+                        
+                        <!-- Chat Item 1 -->
+                        <div onclick="openChatRoom('nanas 😠')" style="display: flex; align-items: center; gap: 12px; background: #fff; padding: 12px; border-radius: 12px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <div style="width: 50px; height: 50px; background: #ccc; border-radius: 50%; overflow: hidden;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <b style="font-size: 15px; color: #000;">nanas 😠</b>
+                                    <span style="font-size: 12px; color: #8e8e93;">09:41</span>
+                                </div>
+                                <p style="font-size: 13px; color: #8e8e93; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">kerja biar sekalian aja kamu penuhin lemari dedek pake dior</p>
+                            </div>
+                        </div>
                     </div>
                 `;
-            } else if(appName === 'Settings') {
+            } 
+            // UI
+            else if(appName === 'Settings') {
                 appContent.innerHTML = `
-                    <div style="background:#fff; border-radius:10px; padding:12px 15px; margin-bottom:15px;">⚙️ Airplane Mode</div>
-                    <div style="background:#fff; border-radius:10px; padding:12px 15px; margin-bottom:15px;">📶 Wi-Fi (Connected)</div>
-                    <div style="background:#fff; border-radius:10px; padding:12px 15px;">🔋 Battery Health (100%)</div>
+                    <div style="background:#fff; border-radius:10px; padding:12px 15px; margin-bottom:15px; font-weight: 500;">⚙️ Airplane Mode</div>
+                    <div style="background:#fff; border-radius:10px; padding:12px 15px; margin-bottom:15px; font-weight: 500;">📶 Wi-Fi (Connected)</div>
+                    <div style="background:#fff; border-radius:10px; padding:12px 15px; font-weight: 500;">🔋 Battery Health (100%)</div>
                 `;
-            } else {
+            } 
+            // DEFAULT / APLIKASI LAINNYA
+            else {
                 appContent.innerHTML = `<p style="text-align:center; color:#888; margin-top:50px;">Halaman ${appName} sedang dibuka...</p>`;
             }
+
+            // Munculkan jendela aplikasi dari bawah ke atas ala iOS
+            document.getElementById('app-view').classList.add('active');
+        }
+
+        function closeApp() {
+            document.getElementById('app-view').classList.remove('active');
+        }
+
+        // Fungsi tambahan
+        function openChatRoom(name) {
+            const appContent = document.getElementById('app-content');
+            document.getElementById('app-title').innerText = name;
+            
+            appContent.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 10px; height: 100%;">
+                    <div style="background: #ece5dd; padding: 10px; border-radius: 8px; font-size: 13px; align-self: flex-start; max-width: 80%; color: #000;">
+                        dah sana sana kerja yg bener
+                    </div>
+                    <div style="background: #dcf8c6; padding: 10px; border-radius: 8px; font-size: 13px; align-self: flex-end; max-width: 80%; color: #000;">
+                        Siap laksanakan nyonya besar! 🫡
+                    </div>
+                    <div style="background: #ece5dd; padding: 10px; border-radius: 8px; font-size: 13px; align-self: flex-start; max-width: 80%; color: #000;">
+                        kerja biar sekalian aja kamu penuhin lemari dedek pake dior
+                    </div>
+                </div>
+            `;
+        }
+
+        }
 
             document.getElementById('app-view').classList.add('active');
         }
