@@ -84,7 +84,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             padding: 55px 20px 20px 20px;
             z-index: 10;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
@@ -108,14 +107,15 @@
         /* Area Notifikasi Tengah */
         .lock-middle-content {
             position: absolute;
+            bottom: 120px;
+            left: 20px;
+            right: 20px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            margin-bottom: 5px;
-            
+            z-index: 15;
+            max-height: 350px;
             overflow-y: auto;
-            max-height: 200px;
-            padding-bottom: 10px;
         }
 
         .notifications-container {
@@ -175,14 +175,17 @@
 
         /* Footer Bawah Lockscreen (Area Swipe) */
         .lock-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
             width: 100%;
             cursor: pointer;
-            z-index: 30; /* Pastikan posisinya di atas layer lain */
-            padding-bottom: 5px;
+            z-index: 20; 
         }
 
         .swipe-text {
