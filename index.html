@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Simulator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Container mirip HP */
+        .phone-frame {
+            width: 100%;
+            max-width: 414px;
+            height: 100%;
+            max-height: 896px;
+            background: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1000&auto=format&fit=crop') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        @media(min-width: 415px) {
+            .phone-frame {
+                border-radius: 45px;
+                border: 12px solid #222;
+                height: 85vh;
+            }
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+        }
+
+        .status-bar .icons {
+            display: flex;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* --- LOCKSCREEN --- */
+        #lockscreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px 20px 30px 20px;
+            z-index: 10;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        }
+
+        .lock-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .date-time {
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .date-time .date {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .date-time .time {
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        /* Notifikasi ala WhatsFun */
+        .notifications {
+            width: 100%;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notif-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .notif-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .notif-app-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .notif-app-info img {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .notif-body {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .notif-body b {
+            font-weight: 600;
+        }
+
+        /* Bawah Lockscreen (Torch, Camera, Home Indicator) */
+        .lock-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .shortcuts {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .circle-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .home-indicator {
+            width: 134px;
+            height: 5px;
+            background: #fff;
+            border-radius: 100px;
+            cursor: pointer;
+        }
+
+        /* --- PASSCODE SCREEN --- */
+        #passcode-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #passcode-screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .passcode-title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+
+        .passcode-dots {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .dot {
+            width: 13px;
+            height: 13px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .dot.filled {
+            background: #fff;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 75px);
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .key {
+            width: 75px;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .key:active {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .key .num {
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .key .sub {
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .passcode-actions {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 40px;
+            margin-top: 20px;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* --- HOMESCREEN --- */
+        #homescreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 50px 20px 20px 20px;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #homescreen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px 12px;
+            padding: 10px;
+            margin-top: 15px;
+        }
+
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .app-name {
+            color: #fff;
+            font-size: 11px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 10px;
+            border: 2px solid rgba(0,0,0,0.1);
+        }
+
+        /* Widget Kalender Kustom */
+        .app-icon.calendar {
+            background: #fff;
+            flex-direction: column;
+            color: #333;
+        }
+        .calendar .cal-month {
+            font-size: 10px;
+            color: #ff3b30;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .calendar .cal-day {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        /* Search Bar & Page Dots */
+        .search-container {
+            padding: 0 10px;
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            padding: 8px 15px;
+            border-radius: 50px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .page-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 10px 0;
+        }
+
+        .dot-page {
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+        }
+        .dot-page.active {
+            background: #fff;
+        }
+
+        /* Dock */
+        .dock {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-frame">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span id="current-time-top">08:52</span>
+            <div class="icons">
+                <span>📶</span>
+                <span>🔋</span>
+            </div>
+        </div>
+
+        <!-- LOCKSCREEN -->
+        <div id="lockscreen">
+            <div class="lock-content">
+                <div class="date-time">
+                    <div class="date" id="date-text">Sat 24 Oct</div>
+                    <div class="time">08.52</div>
+                </div>
+
+                <div class="notifications">
+                    <div class="notif-card">
+                        <div class="notif-header">
+                            <div class="notif-app-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+                                <span>WhatsFun</span>
+                            </div>
+                            <span class="notif-time">now</span>
+                        </div>
+                        <div class="notif-body">
+                            <b>nanas 😠</b><br>
+                            dah sana sana kerja yg bener
+                        </div>
+                    </div>
+                    <div class="notif-card">
+                        <div class="notif-header">
+                            <div class="notif-app-info">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+                                <span>WhatsFun</span>
+                            </div>
+                            <span class="notif-time">now</span>
+                        </div>
+                        <div class="notif-body">
+                            <b>nanas 😠</b><br>
+                            kerja biar sekalian aja kamu penuhin lemari dedek pake dior
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lock-footer">
+                <div class="shortcuts">
+                    <div class="circle-btn">🔦</div>
+                    <div class="circle-btn">📷</div>
+                </div>
+                <div class="home-indicator" id="swipe-trigger" title="Swipe Up to Open"></div>
+            </div>
+        </div>
+
+        <!-- PASSCODE SCREEN -->
+        <div id="passcode-screen">
+            <div class="passcode-title">Enter Passcode</div>
+            <div class="passcode-dots">
+                <div class="dot" id="dot-0"></div>
+                <div class="dot" id="dot-1"></div>
+                <div class="dot" id="dot-2"></div>
+                <div class="dot" id="dot-3"></div>
+            </div>
+            <div class="keypad">
+                <div class="key" onclick="pressKey('1')"><span class="num">1</span><span class="sub"></span></div>
+                <div class="key" onclick="pressKey('2')"><span class="num">2</span><span class="sub">ABC</span></div>
+                <div class="key" onclick="pressKey('3')"><span class="num">3</span><span class="sub">DEF</span></div>
+                <div class="key" onclick="pressKey('4')"><span class="num">4</span><span class="sub">GHI</span></div>
+                <div class="key" onclick="pressKey('5')"><span class="num">5</span><span class="sub">JKL</span></div>
+                <div class="key" onclick="pressKey('6')"><span class="num">6</span><span class="sub">MNO</span></div>
+                <div class="key" onclick="pressKey('7')"><span class="num">7</span><span class="sub">PQRS</span></div>
+                <div class="key" onclick="pressKey('8')"><span class="num">8</span><span class="sub">TUV</span></div>
+                <div class="key" onclick="pressKey('9')"><span class="num">9</span><span class="sub">WXYZ</span></div>
+                <div class="key" style="visibility:hidden"></div>
+                <div class="key" onclick="pressKey('0')"><span class="num">0</span><span class="sub"></span></div>
+                <div class="key" style="visibility:hidden"></div>
+            </div>
+            <div class="passcode-actions">
+                <span onclick="closePasscode()">Cancel</span>
+                <span>Emergency</span>
+            </div>
+        </div>
+
+        <!-- HOMESCREEN -->
+        <div id="homescreen">
+            <div class="app-grid">
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #f5f5f7, #e2e2e5);">📋</div>
+                    <span class="app-name">Reminders</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #98989d, #636366);">⚙️<div class="badge">4</div></div>
+                    <span class="app-name">Settings</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon calendar">
+                        <span class="cal-month">Sat</span>
+                        <span class="cal-day">24</span>
+                    </div>
+                    <span class="app-name">Calendar</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #ff2d55, #ff375f);">🎵</div>
+                    <span class="app-name">Music</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #ffcc00, #ff9500);">🌸</div>
+                    <span class="app-name">Photos</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #34c759, #30b0c7);">💬<div class="badge">113</div></div>
+                    <span class="app-name">WhatsApp</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #1c1c1e, #000);">𝕏<div class="badge">77</div></div>
+                    <span class="app-name">X</span>
+                </div>
+                <div class="app-item">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #ffcc00, #ff9500);">📝</div>
+                    <span class="app-name">Notes</span>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="search-container">
+                    <div class="search-bar">
+                        <span>🔍</span> Search
+                    </div>
+                </div>
+                <div class="page-dots">
+                    <div class="dot-page active"></div>
+                    <div class="dot-page"></div>
+                </div>
+                <div class="dock">
+                    <div class="app-item">
+                        <div class="app-icon" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">📑</div>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon" style="background: linear-gradient(135deg, #34c759, #28a745);">📞</div>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon" style="background: linear-gradient(135deg, #007aff, #0056b3);">🧭</div>
+                    </div>
+                    <div class="app-item">
+                        <div class="app-icon" style="background: linear-gradient(135deg, #af52de, #89288f);">🐼</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lockscreen = document.getElementById('lockscreen');
+        const passcodeScreen = document.getElementById('passcode-screen');
+        const homescreen = document.getElementById('homescreen');
+        const swipeTrigger = document.getElementById('swipe-trigger');
+
+        let passcode = "";
+        const correctPasscode = "1234"; // Password bebas, default 1234
+
+        // Klik garis home indicator di lockscreen -> buka Passcode Screen
+        swipeTrigger.addEventListener('click', () => {
+            passcodeScreen.classList.add('active');
+        });
+
+        function closePasscode() {
+            passcodeScreen.classList.remove('active');
+            passcode = "";
+            updateDots();
+        }
+
+        function pressKey(num) {
+            if (passcode.length < 4) {
+                passcode += num;
+                updateDots();
+
+                if (passcode.length === 4) {
+                    setTimeout(() => {
+                        // Langsung masuk ke homescreen (bisa diatur validasi kalau mau strict)
+                        passcodeScreen.classList.remove('active');
+                        lockscreen.style.transform = 'translateY(-100%)';
+                        lockscreen.style.opacity = '0';
+                        homescreen.classList.add('active');
+                    }, 300);
+                }
+            }
+        }
+
+        function updateDots() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i < passcode.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
