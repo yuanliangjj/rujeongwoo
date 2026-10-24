@@ -82,14 +82,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 55px 20px 20px 20px;
+            display: grid;
+            grid-template-rows: auto lfr
+auto;
+            padding: 55px 20px 25px 20px;
             z-index: 10;
+            box-sizing: border-box;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
 
         .lock-top-content {
+            grid-row: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -106,15 +109,13 @@
 
         /* Area Notifikasi Tengah */
         .lock-middle-content {
-            position: absolute;
-            bottom: 120px;
-            left: 20px;
-            right: 20px;
+            grid-row: 3;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            z-index: 15;
-            max-height: 350px;
+            width: 100%;
+            margin-bottom: 12px;
+            max-height: 320px;
             overflow-y: auto;
         }
 
@@ -175,17 +176,14 @@
 
         /* Footer Bawah Lockscreen (Area Swipe) */
         .lock-footer {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
+            grid-row: 3;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
             width: 100%;
             cursor: pointer;
-            z-index: 20; 
+            z-index: 30; 
         }
 
         .swipe-text {
